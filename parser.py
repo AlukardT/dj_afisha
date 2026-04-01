@@ -10,6 +10,19 @@ def fetch_events():
         resp = requests.get(URL, headers=HEADERS, timeout=10)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, 'html.parser')
+        
+        # Ищем баннер (top-decoration)
+        banner = ''
+        top_dec = soup.select_one('.top-decoration')
+        if top_dec and top_dec.get('style'):
+            style = top_dec.get('style')
+            import re
+            match = re.search(r'background-image:\s*url\([\'"]?(.*?)[\'"]?\)', style)
+            if match:
+                banner = match.group(1)
+                if banner and not banner.startswith('http'):
+                    banner = 'https://dj.ru' + banner
+        
         events = []
         items = soup.select('li.poster__i')
         print(f"Найдено {len(items)} событий", file=sys.stderr)
@@ -38,36 +51,45 @@ def fetch_events():
                 'place': place,
                 'genres': genres,
             })
-        return events
+        return events, banner
     except Exception as e:
         print(f"Ошибка парсинга: {e}", file=sys.stderr)
-        return []
+        return [], ''
 
-def generate_html(events):
-    html = '''<!DOCTYPE html>
+def generate_html(events, banner):
+    html = f'''<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Афиша Dj Alex Blond</title>
     <style>
-        body { background: transparent; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .afisha { background: #020306; border-radius: 16px; padding: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .afisha h3 { margin: 0 0 12px; font-size: 18px; font-weight: normal; display: flex; align-items: center; gap: 8px; }
-        .afisha h3 span:first-child { font-size: 22px; }
-        .event { margin-bottom: 20px; border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; }
-        .event:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .event-title { font-weight: bold; margin-bottom: 4px; font-size: 16px; }
-        .event-title a { color: #E8E8E8; text-decoration: none; transition: color 0.2s; }
-        .event-title a:hover { color: #6EB4D2; }
-        .event-date { font-size: 12px; color: #B8B3B3; margin-bottom: 4px; }
-        .event-place { font-size: 12px; color: #B8B3B3; }
-        .event-genres { font-size: 11px; color: #6EB4D2; margin-top: 2px; opacity: 0.8; }
+        body {{ background: transparent; font-family: Arial, sans-serif; margin: 0; padding: 0; }}
+        .afisha {{ background: #020306; border-radius: 16px; padding: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }}
+        .banner {{ width: 100%; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }}
+        .banner img {{ width: 100%; height: auto; display: block; }}
+        .afisha h3 {{ margin: 0 0 12px; font-size: 18px; font-weight: normal; display: flex; align-items: center; gap: 8px; }}
+        .afisha h3 span:first-child {{ font-size: 22px; }}
+        .event {{ margin-bottom: 20px; border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; }}
+        .event:last-child {{ border-bottom: none; margin-bottom: 0; padding-bottom: 0; }}
+        .event-title {{ font-weight: bold; margin-bottom: 4px; font-size: 16px; }}
+        .event-title a {{ color: #E8E8E8; text-decoration: none; transition: color 0.2s; }}
+        .event-title a:hover {{ color: #6EB4D2; }}
+        .event-date {{ font-size: 12px; color: #B8B3B3; margin-bottom: 4px; }}
+        .event-place {{ font-size: 12px; color: #B8B3B3; }}
+        .event-genres {{ font-size: 11px; color: #6EB4D2; margin-top: 2px; opacity: 0.8; }}
     </style>
 </head>
 <body>
 <div class="afisha">
-    <h3>
+'''
+    if banner:
+        html += f'''    <div class="banner">
+        <img src="{banner}" alt="Афиша">
+    </div>
+'''
+    else:
+        html += '''    <h3>
         <span>📅</span>
         <span>Афиша выступлений</span>
     </h3>
@@ -91,10 +113,9 @@ def generate_html(events):
     return html
 
 def main():
-    events = fetch_events()
+    events, banner = fetch_events()
     with open('index.html', 'w', encoding='utf-8') as f:
-        f.write(generate_html(events))
-    print("index.html written", file=sys.stderr)
+        f.write(generate_html(events, banner))
 
 if __name__ == "__main__":
     main()
