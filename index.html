@@ -5,34 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Афиша Dj Alex Blond</title>
     <style>
-        body { background: transparent; font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        .afisha { background: #020306; border-radius: 16px; padding: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .banner { width: 100%; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
-        .banner img { width: 100%; height: auto; display: block; }
-        .afisha h3 { margin: 0 0 12px; font-size: 18px; font-weight: normal; display: flex; align-items: center; gap: 8px; }
-        .afisha h3 span:first-child { font-size: 22px; }
-        .event { margin-bottom: 20px; border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; }
-        .event:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
-        .event-title { font-weight: bold; margin-bottom: 4px; font-size: 16px; }
-        .event-title a { color: #E8E8E8; text-decoration: none; transition: color 0.2s; }
-        .event-title a:hover { color: #6EB4D2; }
-        .event-date { font-size: 12px; color: #B8B3B3; margin-bottom: 4px; }
-        .event-place { font-size: 12px; color: #B8B3B3; }
-        .event-genres { font-size: 11px; color: #6EB4D2; margin-top: 2px; opacity: 0.8; }
+        body {
+            background: transparent;
+            font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .afisha {
+            max-width: 100%;
+            text-align: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .afisha h3 {
+            font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
+            font-size: 28px;
+            color: #64A8FF;
+            margin: 0 0 20px 0;
+            font-weight: normal;
+            letter-spacing: 1px;
+        }
+        .banner-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: block;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
 <div class="afisha">
-    <div class="banner">
-        <img src="https://dj.ru/users/top/82/675682_294726d73e10d9bb29ad15abe40b2175.jpg.1204x.jpg" alt="Афиша">
-    </div>
-
-    <div class="event">
-        <div class="event-title"><a href="https://dj.ru/afisha/event/554164" target="_blank">Dance Party</a></div>
-        <div class="event-date">апр 03 пт</div>
-        <div class="event-place">Рестобар "Сытый Слон" Россия, Краснодар, ст.Динская ул.Красная 42</div>
-        <div class="event-genres">Club/Dance, Dance-Pop</div>
-    </div>
+    <h3>Афиша выступлений</h3>
+    <img class="banner-img" src="https://dj.ru/users/top/82/675682_294726d73e10d9bb29ad15abe40b2175.jpg.1204x.jpg" alt="Афиша">
 
 </div>
 </body>
