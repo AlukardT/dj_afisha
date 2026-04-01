@@ -76,8 +76,12 @@ def generate_html(data):
             max-width: 500px;
             width: 100%;
             text-align: center;
-            padding: 16px;
+            padding: 20px 16px;
             box-sizing: border-box;
+            background: rgba(10, 10, 10, 0.7);
+            border-radius: 16px;
+            border: 1px solid rgba(100, 168, 255, 0.3);
+            backdrop-filter: blur(4px);
         }
         .afisha h3 {
             font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
@@ -89,7 +93,7 @@ def generate_html(data):
         }
         .banner-img {
             width: 100%;
-            max-width: 224px;   /* уменьшено на 20% (было 280px) */
+            max-width: 202px;   /* уменьшено на 10% (было 224px) */
             height: auto;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -122,7 +126,7 @@ def generate_html(data):
 </head>
 <body>
 <div class="afisha">
-    <h3>Афиша выступлений</h3>
+    <h3>Афиша событий</h3>
 '''
     if data and data['img']:
         html += f'    <img class="banner-img" src="{data["img"]}" alt="Афиша">\n'
