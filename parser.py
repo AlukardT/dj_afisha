@@ -15,30 +15,23 @@ def fetch_event_data():
             print("Не найдено событий", file=sys.stderr)
             return None
 
-        # Изображение (баннер)
         img_tag = first_event.select_one('img.poster__img')
         img_url = img_tag.get('src') if img_tag else None
         if img_url and img_url.startswith('/'):
             img_url = 'https://dj.ru' + img_url
 
-        # Название
         title_tag = first_event.select_one('h3.poster__h a')
         title = title_tag.get_text(strip=True) if title_tag else ''
 
-        # Диджей
         dj_tag = first_event.select_one('.poster__info-i_type_dj a')
         dj = dj_tag.get_text(strip=True) if dj_tag else ''
 
-        # Жанры
         genre_tags = first_event.select('.poster__info-i_type_genre a')
         genres = ', '.join([g.get_text(strip=True) for g in genre_tags])
 
-        # Локация
         place_tag = first_event.select_one('.poster__info-i_type_map')
         if place_tag:
-            # Извлекаем текст, удаляя переносы и лишние пробелы
             place = place_tag.get_text(' ', strip=True)
-            # Если в строке есть несколько строк, соединяем
             place = ' '.join(place.split())
         else:
             place = ''
@@ -62,6 +55,13 @@ def generate_html(data):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Афиша Dj Alex Blond</title>
     <style>
+        @font-face {
+            font-family: 'Bebas Neue Cyrillic';
+            src: url('BebasNeueCyrillic.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
         body {
             background: transparent;
             font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
