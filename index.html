@@ -16,7 +16,8 @@
             min-height: 100vh;
         }
         .afisha {
-            max-width: 100%;
+            max-width: 500px;
+            width: 100%;
             text-align: center;
             padding: 16px;
             box-sizing: border-box;
@@ -30,12 +31,35 @@
             letter-spacing: 1px;
         }
         .banner-img {
-            max-width: 100%;
+            width: 100%;
+            max-width: 280px;
             height: auto;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             display: block;
-            margin: 0 auto;
+            margin: 0 auto 20px auto;
+        }
+        .event-title {
+            font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+            margin: 0 0 8px 0;
+        }
+        .event-dj {
+            font-size: 18px;
+            color: #ccc;
+            margin: 0 0 8px 0;
+        }
+        .event-genres {
+            font-size: 14px;
+            color: #64A8FF;
+            margin: 0 0 12px 0;
+        }
+        .event-place {
+            font-size: 14px;
+            color: #aaa;
+            margin: 0;
         }
     </style>
 </head>
@@ -43,6 +67,11 @@
 <div class="afisha">
     <h3>Афиша выступлений</h3>
     <img class="banner-img" src="https://dj.ru/images/afisha/flyers/64/554164_main_33a30cf9.jpg.98x138.jpg" alt="Афиша">
+
+    <div class="event-title">Dance Party</div>
+    <div class="event-dj">Dj Alex Blond</div>
+    <div class="event-genres">Club/Dance, Dance-Pop</div>
+    <div class="event-place">Рестобар "Сытый Слон" Россия, Краснодар, ст.Динская ул.Красная 42</div>
 
 </div>
 </body>
