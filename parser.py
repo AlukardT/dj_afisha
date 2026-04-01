@@ -53,7 +53,7 @@ def generate_html(data):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Афиша Dj Alex Blond</title>
+    <title>Афиша событий Dj Alex Blond</title>
     <style>
         @font-face {
             font-family: 'Bebas Neue Cyrillic';
@@ -78,10 +78,9 @@ def generate_html(data):
             text-align: center;
             padding: 20px 16px;
             box-sizing: border-box;
-            background: rgba(10, 10, 10, 0.7);
+            background: #020306;
             border-radius: 16px;
             border: 1px solid rgba(100, 168, 255, 0.3);
-            backdrop-filter: blur(4px);
         }
         .afisha h3 {
             font-family: 'Bebas Neue Cyrillic', 'Arial', sans-serif;
@@ -93,7 +92,7 @@ def generate_html(data):
         }
         .banner-img {
             width: 100%;
-            max-width: 202px;   /* уменьшено на 10% (было 224px) */
+            max-width: 202px;
             height: auto;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
