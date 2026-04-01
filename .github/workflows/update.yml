@@ -3,22 +3,27 @@ name: Update Events
 on:
   schedule:
     - cron: '0 */3 * * *'   # каждые 3 часа
-  workflow_dispatch:
+  workflow_dispatch:        # возможность запуска вручную
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
       - name: Install dependencies
         run: pip install requests beautifulsoup4
+
       - name: Run parser
         run: python parser.py
-      - name: Commit and push
+
+      - name: Commit and push if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
