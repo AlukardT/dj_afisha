@@ -1,32 +1,35 @@
 import requests
 from bs4 import BeautifulSoup
 import sys
-import re
 
 URL = "https://dj.ru/djalexblond/afisha"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
 
-def fetch_banner():
+def fetch_first_event_image():
     try:
         resp = requests.get(URL, headers=HEADERS, timeout=10)
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, 'html.parser')
-        # Ищем элемент с классом top-decoration и извлекаем background-image
-        top_decoration = soup.select_one('.top-decoration')
-        if top_decoration and top_decoration.get('style'):
-            style = top_decoration.get('style')
-            match = re.search(r'background-image:\s*url\([\'"]?(.*?)[\'"]?\)', style)
-            if match:
-                banner_url = match.group(1)
-                if banner_url.startswith('/'):
-                    banner_url = 'https://dj.ru' + banner_url
-                return banner_url
-        return None
+        # Ищем первый элемент события
+        first_event = soup.select_one('li.poster__i')
+        if not first_event:
+            print("Не найдено событий", file=sys.stderr)
+            return None
+        img_tag = first_event.select_one('img.poster__img')
+        if img_tag and img_tag.get('src'):
+            img_url = img_tag['src']
+            # Если URL относительный, делаем абсолютным
+            if img_url.startswith('/'):
+                img_url = 'https://dj.ru' + img_url
+            return img_url
+        else:
+            print("Изображение не найдено", file=sys.stderr)
+            return None
     except Exception as e:
-        print(f"Ошибка загрузки баннера: {e}", file=sys.stderr)
+        print(f"Ошибка загрузки: {e}", file=sys.stderr)
         return None
 
-def generate_html(banner_url):
+def generate_html(img_url):
     html = '''<!DOCTYPE html>
 <html>
 <head>
@@ -72,10 +75,10 @@ def generate_html(banner_url):
 <div class="afisha">
     <h3>Афиша выступлений</h3>
 '''
-    if banner_url:
-        html += f'    <img class="banner-img" src="{banner_url}" alt="Афиша">\n'
+    if img_url:
+        html += f'    <img class="banner-img" src="{img_url}" alt="Афиша">\n'
     else:
-        html += '    <p>Баннер не загружен</p>\n'
+        html += '    <p>Изображение не найдено</p>\n'
     html += '''
 </div>
 </body>
@@ -83,9 +86,9 @@ def generate_html(banner_url):
     return html
 
 def main():
-    banner_url = fetch_banner()
+    img_url = fetch_first_event_image()
     with open('index.html', 'w', encoding='utf-8') as f:
-        f.write(generate_html(banner_url))
+        f.write(generate_html(img_url))
 
 if __name__ == "__main__":
     main()
