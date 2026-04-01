@@ -1,3 +1,48 @@
+import requests
+from bs4 import BeautifulSoup
+import sys
+
+URL = "https://dj.ru/djalexblond/afisha"
+HEADERS = {"User-Agent": "Mozilla/5.0"}
+
+def fetch_events():
+    try:
+        resp = requests.get(URL, headers=HEADERS, timeout=10)
+        resp.raise_for_status()
+        soup = BeautifulSoup(resp.text, 'html.parser')
+        events = []
+        items = soup.select('li.poster__i')
+        print(f"Найдено {len(items)} событий", file=sys.stderr)
+        for item in items[:5]:
+            title_tag = item.select_one('h3.poster__h a')
+            if not title_tag:
+                continue
+            title = title_tag.get_text(strip=True)
+            link = title_tag.get('href')
+            if link and not link.startswith('http'):
+                link = 'https://dj.ru' + link
+
+            date_block = item.select_one('.poster__date')
+            date_text = date_block.get_text(' ', strip=True) if date_block else ''
+
+            place_tag = item.select_one('.poster__info-i_type_map')
+            place = place_tag.get_text(' ', strip=True) if place_tag else ''
+
+            genre_tags = item.select('.poster__info-i_type_genre a')
+            genres = ', '.join([g.get_text(strip=True) for g in genre_tags])
+
+            events.append({
+                'title': title,
+                'link': link,
+                'date': date_text,
+                'place': place,
+                'genres': genres,
+            })
+        return events
+    except Exception as e:
+        print(f"Ошибка парсинга: {e}", file=sys.stderr)
+        return []
+
 def generate_html(events):
     html = '''<!DOCTYPE html>
 <html>
@@ -44,3 +89,12 @@ def generate_html(events):
 </body>
 </html>'''
     return html
+
+def main():
+    events = fetch_events()
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(generate_html(events))
+    print("index.html written", file=sys.stderr)
+
+if __name__ == "__main__":
+    main()
