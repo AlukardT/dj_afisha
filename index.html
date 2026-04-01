@@ -7,6 +7,8 @@
     <style>
         body { background: transparent; font-family: Arial, sans-serif; margin: 0; padding: 0; }
         .afisha { background: #020306; border-radius: 16px; padding: 16px; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .banner { width: 100%; border-radius: 12px; margin-bottom: 16px; overflow: hidden; }
+        .banner img { width: 100%; height: auto; display: block; }
         .afisha h3 { margin: 0 0 12px; font-size: 18px; font-weight: normal; display: flex; align-items: center; gap: 8px; }
         .afisha h3 span:first-child { font-size: 22px; }
         .event { margin-bottom: 20px; border-bottom: 1px solid #2a2a2a; padding-bottom: 12px; }
@@ -21,10 +23,9 @@
 </head>
 <body>
 <div class="afisha">
-    <h3>
-        <span>📅</span>
-        <span>Афиша выступлений</span>
-    </h3>
+    <div class="banner">
+        <img src="https://dj.ru/users/top/82/675682_294726d73e10d9bb29ad15abe40b2175.jpg.1204x.jpg" alt="Афиша">
+    </div>
 
     <div class="event">
         <div class="event-title"><a href="https://dj.ru/afisha/event/554164" target="_blank">Dance Party</a></div>
